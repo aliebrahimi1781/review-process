@@ -38,7 +38,7 @@ public class ReviewTest {
     }
 
     @Test
-    @Deployment(resources = {"process/pm.bpmn20.xml"})
+    @Deployment(resources = {"process/review.bpmn20.xml"})
     public void simpleProcessTest() {
 
     }
