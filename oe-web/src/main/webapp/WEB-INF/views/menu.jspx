@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0"
+     xmlns:sec="http://www.springframework.org/security/tags">
+
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <sec:authorize access="hasRole('lm')" var="hasLMRole"/>
+
+    <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_employee" z="WxiVAJUlwzLkYi6u7YpEjYOT82A=" render="${hasLMRole}">
+            <menu:item id="i_employee_list" messageCode="Employee list" url="/employee-list" z="gAIxvrBOHQC/N0HWTGD46jzwyk8="/>
+        </menu:category>
+        <menu:category id="c_review" z="WxiVAJUlwzLkYi6u7YpEjYOT82A=">
+            <menu:item id="i_review_list" messageCode="Review list" url="/review-list" z="gAIxvrBOHQC/N0HWTGD46jzwyk8="/>
+        </menu:category>
+    </menu:menu>
+</div>

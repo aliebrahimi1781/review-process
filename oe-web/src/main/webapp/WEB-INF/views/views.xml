@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="employee-list" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/employee-list.jspx" />
+    </definition>
+
+    <definition name="review-list" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/review-list.jspx" />
+    </definition>
+
+    <definition name="review-request" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/review-request.jspx" />
+    </definition>
+
+    <definition name="review" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/review.jspx" />
+    </definition>
+
+    <definition name="home" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/home.jspx" />
+    </definition>
+
+    <definition name="login" extends="public">
+        <put-attribute name="body" value="/WEB-INF/views/login.jspx" />
+    </definition>
+
+    <definition name="dataAccessFailure" extends="public">
+        <put-attribute name="body" value="/WEB-INF/views/dataAccessFailure.jspx" />
+    </definition>
+
+    <definition name="resourceNotFound" extends="public">
+        <put-attribute name="body" value="/WEB-INF/views/resourceNotFound.jspx" />
+    </definition>
+
+    <definition name="uncaughtException" extends="public">
+        <put-attribute name="body" value="/WEB-INF/views/uncaughtException.jspx" />
+    </definition>
+
+</tiles-definitions>

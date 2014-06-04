@@ -1,0 +1,30 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:form="http://www.springframework.org/tags/form" xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+<spring:url value="/" var="contextPath"/>
+
+    <h1>Review request for "${employee.firstname} ${employee.lastname}" from:</h1>
+    <form:form action="${contextPath}review-request" method="POST" modelAttribute="review">
+        <form:input type="hidden" value="${employee.id}" path="employee.id"/>
+        <div class="fields">
+            <br/>
+            <c:forEach items="${reviewers}" var="r" varStatus="s">
+                <form:checkbox path="reviewers" id="reviewers_${s.index}" value="${r.id}" /> ${r.firstname} ${r.lastname}
+                <br/>
+                <script type="text/javascript">
+                    Spring.addDecoration(new Spring.ElementDecoration({elementId : 'reviewers_${s.index}', widgetType : 'dijit.form.CheckBox', widgetAttrs : {promptMessage: 'Enter content', required : true}}));
+                </script>
+            </c:forEach>
+        </div>
+        <div class="buttons" style="margin-top: 15px">
+            <input id="submitReviewRequest" type="submit" name="submit" value="Submit"/>
+        </div>
+    </form:form>
+
+    <script type="text/javascript">
+        Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
+    </script>
+</div>

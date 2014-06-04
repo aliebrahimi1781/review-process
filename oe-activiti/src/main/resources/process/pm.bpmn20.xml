@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="taskAssigneeExample"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:activiti="http://activiti.org/bpmn"
+             targetNamespace="http://www.endava.com/pm">
+    <process id="performanceManagement" name="Performance management process">
+        <startEvent id="theStart"/>
+        <sequenceFlow sourceRef="theStart" targetRef="createReviewList"/>
+        <serviceTask id="createReviewList" name="Create review list" activiti:expression="${reviewService.createReviewList(employee, reviewers)}" activiti:resultVariable="reviewList"/>
+        <sequenceFlow sourceRef="createReviewList" targetRef="reviewSubProcess"/>
+        <subProcess id="reviewSubProcess">
+            <multiInstanceLoopCharacteristics isSequential="false">
+                <loopDataInputRef>reviewList</loopDataInputRef>
+                <inputDataItem name="review"/>
+            </multiInstanceLoopCharacteristics>
+            <startEvent id="theStartSubProcess"/>
+            <sequenceFlow sourceRef="theStartSubProcess" targetRef="submitReviewForm"/>
+            <userTask id="submitReviewForm" name="Submit review" activiti:assignee="${review.submitter.username}">
+                <documentation>Submit review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
+            </userTask>
+            <sequenceFlow sourceRef="submitReviewForm" targetRef="theEndSubProcess"/>
+            <endEvent id="theEndSubProcess"/>
+        </subProcess>
+        <sequenceFlow sourceRef="reviewSubProcess" targetRef="createFinalReview"/>
+        <serviceTask id="createFinalReview" name="Create final review" activiti:expression="${reviewService.createFinalReview(employee, reviewList)}" activiti:resultVariable="review"/>
+        <sequenceFlow sourceRef="createFinalReview" targetRef="submitFinalReview"/>
+        <userTask id="submitFinalReview" name="Submit review" activiti:assignee="${review.submitter.username}">
+            <documentation>Submit final review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
+        </userTask>
+        <sequenceFlow sourceRef="submitFinalReview" targetRef="theEnd"/>
+        <endEvent id="theEnd"/>
+    </process>
+</definitions>

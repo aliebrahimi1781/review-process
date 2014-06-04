@@ -1,0 +1,33 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+     xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fn="http://java.sun.com/jsp/jstl/functions" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+
+    <spring:url value="/resources/j_spring_security_check" var="form_url"/>
+    <div class="dijitTitlePane">
+        <div class="dijitTitlePaneTitle dijitTitlePaneTitleOpen dijitOpen">Login</div>
+        <br/>
+        <form action='${fn:escapeXml(form_url)}' method='POST' id="login-form">
+            <div class="fields">
+                <label for="login-username">Username: </label>
+                <input name="j_username" type="text" id="login-username"/>
+            </div>
+            <br/>
+            <div class="fields">
+                <label for="login-password">Password: </label>
+                <input name="j_password" type="password" id="login-password"/>
+            </div>
+            <br/>
+            <div class="fields">
+                <input id="login-btn" type="submit" name="auth" value="Login"/>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'login-username', widgetType : 'dijit.form.ValidationTextBox', widgetAttrs : {promptMessage: 'Enter username', required : false}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'login-password', widgetType : 'dijit.form.ValidationTextBox', widgetAttrs : {promptMessage: 'Enter password', required : false}}));
+        Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'login-btn', event:'onclick'}));
+    </script>
+</div>
