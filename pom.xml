@@ -23,12 +23,7 @@
         <dependencies>
             <dependency>
                 <groupId>md.endava</groupId>
-                <artifactId>oe-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>md.endava</groupId>
-                <artifactId>oe-activiti</artifactId>
+                <artifactId>review-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

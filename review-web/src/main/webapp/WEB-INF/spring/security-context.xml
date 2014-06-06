@@ -19,7 +19,7 @@
         <sec:intercept-url pattern="/**" access="isAuthenticated()" />
     </sec:http>
 
-    <bean id="databaseAuthenticationProvider" class="md.endava.oe.security.DatabaseAuthenticationProvider"/>
+    <bean id="databaseAuthenticationProvider" class="md.endava.review.security.DatabaseAuthenticationProvider"/>
 
     <sec:authentication-manager alias="authenticationManager">
         <sec:authentication-provider ref="databaseAuthenticationProvider"/>

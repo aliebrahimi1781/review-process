@@ -28,8 +28,8 @@
         <property name="jobExecutorActivate" value="false"/>
         <property name="customSessionFactories">
             <list>
-                <bean class="md.endava.oe.activiti.identity.ActivitiUserManagerFactory" />
-                <bean class="md.endava.oe.activiti.identity.ActivitiGroupManagerFactory" />
+                <bean class="md.endava.review.activiti.identity.ActivitiUserManagerFactory" />
+                <bean class="md.endava.review.activiti.identity.ActivitiGroupManagerFactory" />
             </list>
         </property>
         <property name="deploymentResources"

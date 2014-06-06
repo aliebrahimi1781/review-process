@@ -4,10 +4,10 @@
     <persistence-unit name="pmPersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>md.endava.oe.domain.Project</class>
-        <class>md.endava.oe.domain.Review</class>
-        <class>md.endava.oe.domain.Role</class>
-        <class>md.endava.oe.domain.User</class>
+        <class>md.endava.review.domain.Project</class>
+        <class>md.endava.review.domain.Review</class>
+        <class>md.endava.review.domain.Role</class>
+        <class>md.endava.review.domain.User</class>
 
         <properties>
             <property name="hibernate.connection.url" value="jdbc:h2:mem:pm;DB_CLOSE_DELAY=1000"/>
