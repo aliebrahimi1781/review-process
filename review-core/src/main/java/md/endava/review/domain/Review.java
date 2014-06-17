@@ -15,13 +15,12 @@ import java.util.List;
 @Entity
 @Table(name = "pm_review")
 public class Review extends GenericEntity {
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Review parent;
+
     @Enumerated(value = EnumType.STRING)
     private ReviewType reviewType;
     private String content;
     private Integer mark;
+    private Boolean approved;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private User employee;
@@ -30,14 +29,6 @@ public class Review extends GenericEntity {
     private User submitter;
     @Transient
     private List<Long> reviewers;
-
-    public Review getParent() {
-        return parent;
-    }
-
-    public void setParent(final Review aParent) {
-        parent = aParent;
-    }
 
     public ReviewType getReviewType() {
         return reviewType;
@@ -61,6 +52,14 @@ public class Review extends GenericEntity {
 
     public void setMark(final Integer aMark) {
         mark = aMark;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(final Boolean aApproved) {
+        approved = aApproved;
     }
 
     public User getEmployee() {

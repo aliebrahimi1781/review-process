@@ -371,3 +371,7 @@ fieldset th {
 	height: 11px;
 	width: 16px;
 }
+
+.dijitTextBoxDisabled INPUT{
+    color: #000000 !important;
+}

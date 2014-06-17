@@ -6,7 +6,7 @@
 
     <spring:url value="/" var="contextPath"/>
 
-    <h1>Review for "${review.employee.firstname} ${review.employee.lastname}"</h1>
+    <h1>${review.reviewType} review for "${review.employee.firstname} ${review.employee.lastname}"</h1>
     <form:form action="${contextPath}review/${taskId}" method="POST" modelAttribute="review">
         <div class="fields">
             <label for="content">Content: </label>

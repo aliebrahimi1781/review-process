@@ -23,11 +23,8 @@
     </span>
     </c:if>
 
-    <spring:url value="/resources/images/springsource-logo.png" var="logo"/>
-    <c:set value="Sponsored by SpringSource" var="sponsored"/>
-  <span>
-    <a href="http://springsource.com" title="${fn:escapeXml(sponsored)}">
-        <img align="right" alt="${fn:escapeXml(sponsored)}" src="${logo}"/>
-    </a>
+  <span style="float: right">
+      <sec:authentication property="principal.firstname"/>&amp;nbsp;
+      <sec:authentication property="principal.lastname"/>
   </span>
 </div>

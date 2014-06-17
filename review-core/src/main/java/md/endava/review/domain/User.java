@@ -59,4 +59,32 @@ public class User extends GenericEntity {
     public Set<Role> getRoles() {
         return roles;
     }
+
+    public void setUsername(final String aUsername) {
+        username = aUsername;
+    }
+
+    public void setFirstname(final String aFirstname) {
+        firstname = aFirstname;
+    }
+
+    public void setLastname(final String aLastname) {
+        lastname = aLastname;
+    }
+
+    public void setEmail(final String aEmail) {
+        email = aEmail;
+    }
+
+    public void setPassword(final String aPassword) {
+        password = aPassword;
+    }
+
+    public void setLm(final User aLm) {
+        lm = aLm;
+    }
+
+    public void setRoles(final Set<Role> aRoles) {
+        roles = aRoles;
+    }
 }

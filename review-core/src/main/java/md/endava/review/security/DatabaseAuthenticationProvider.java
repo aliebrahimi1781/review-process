@@ -70,6 +70,6 @@ public class DatabaseAuthenticationProvider extends AbstractUserDetailsAuthentic
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        return new SessionUser(user.getUsername(), user.getPassword(), true, true, true, true, authorities, user.getId(), user.getFirstname(), user.getRoles());
+        return new SessionUser(user.getUsername(), user.getPassword(), true, true, true, true, authorities, user.getId(), user.getFirstname(), user.getLastname(), user.getRoles());
     }
 }

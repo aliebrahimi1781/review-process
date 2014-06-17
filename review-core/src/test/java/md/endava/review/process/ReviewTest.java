@@ -1,5 +1,6 @@
 package md.endava.review.process;
 
+import md.endava.review.domain.User;
 import md.endava.review.service.ReviewService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -14,6 +15,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author apavel
@@ -40,7 +44,24 @@ public class ReviewTest {
     @Test
     @Deployment(resources = {"process/review.bpmn20.xml"})
     public void simpleProcessTest() {
+//        Map<String, Object> processVariables = new HashMap<String, Object>();
+//        processVariables.put("reviewers", createReviewers());
+//        processVariables.put("employee", createEmployee());
+//        runtimeService.startProcessInstanceById("reviewProcess", processVariables);
+    }
 
+    private List<User> createReviewers() {
+        List<User> users = new ArrayList<User>();
+        User user = new User();
+        user.setId(1L);
+        users.add(user);
+        return users;
+    }
+
+    private User createEmployee() {
+        User user = new User();
+        user.setId(2L);
+        return user;
     }
 
 

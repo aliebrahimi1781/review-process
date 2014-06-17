@@ -1,8 +1,8 @@
 insert into pm_user (username, password, firstname, lastname) values ('admin', 'admin', 'admin', 'admin');
-insert into pm_user (username, password, firstname, lastname) values ('lm', 'lm', 'lm', 'lm');
-insert into pm_user (username, password, firstname, lastname, lm_id) values ('emp_a', 'emp_a', 'emp_a', 'emp_a', 2);
-insert into pm_user (username, password, firstname, lastname, lm_id) values ('emp_b', 'emp_b', 'emp_b', 'emp_b', 2);
-insert into pm_user (username, password, firstname, lastname, lm_id) values ('emp_c', 'emp_c', 'emp_c', 'emp_c', 2);
+insert into pm_user (username, password, firstname, lastname) values ('lm', 'lm', 'Line', 'Manager');
+insert into pm_user (username, password, firstname, lastname, lm_id) values ('lmessi', '1234', 'Lionel', 'Messi', 2);
+insert into pm_user (username, password, firstname, lastname, lm_id) values ('ainiesta', '1234', 'Andres', 'Iniesta', 2);
+insert into pm_user (username, password, firstname, lastname, lm_id) values ('thenry', '1234', 'Thierry', 'Henry', 2);
 
 insert into pm_role (name) values ('admin');
 insert into pm_role (name) values ('lm');

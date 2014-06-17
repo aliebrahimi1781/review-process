@@ -5,7 +5,7 @@ import md.endava.review.domain.User;
 import md.endava.review.security.SessionUser;
 import md.endava.review.service.ReviewService;
 import md.endava.review.service.UserService;
-import org.activiti.engine.RepositoryService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +31,6 @@ import java.util.Map;
 public class ReviewController {
 
     @Autowired
-    private RepositoryService repositoryService;
-
-    @Autowired
     private RuntimeService runtimeService;
 
     @Autowired
@@ -45,12 +42,15 @@ public class ReviewController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HistoryService historyService;
+
     @RequestMapping(value = "/employee-list", method = RequestMethod.GET)
     public String employeeList(Model uiModel) {
         SessionUser currentUser = getSessionUser();
         Map<User, Boolean> employeeList = new LinkedHashMap<User, Boolean>();
         for (User emp : userService.findByLmId(currentUser.getId())) {
-            employeeList.put(emp, !taskService.createTaskQuery().processDefinitionKey("performanceManagement").processVariableValueEquals(emp).list().isEmpty());
+            employeeList.put(emp, !taskService.createTaskQuery().processDefinitionKey("reviewProcess").processVariableValueEquals(emp).list().isEmpty());
         }
         uiModel.addAttribute("employeeList", employeeList);
         return "employee-list";
@@ -61,7 +61,7 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "/review-request/{empId}", method = RequestMethod.GET)
-    public String showReviewRequestForm(@PathVariable("empId") Long empId, Model uiModel) {
+    public String createReviewRequestForm(@PathVariable("empId") Long empId, Model uiModel) {
         uiModel.addAttribute("employee", userService.findById(empId));
         uiModel.addAttribute("review", new Review());
         uiModel.addAttribute("reviewers", userService.findReviewers(empId));
@@ -69,17 +69,17 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "/review-request", method = RequestMethod.POST)
-    public String saveReviewRequestForm(@ModelAttribute Review review, SessionStatus aSessionStatus) {
+    public String createReviewRequest(@ModelAttribute Review review, SessionStatus aSessionStatus) {
         Map<String, Object> processVariables = new HashMap<String, Object>();
         processVariables.put("reviewers", userService.findIn(review.getReviewers()));
         processVariables.put("employee", userService.findById(review.getEmployee().getId()));
-        runtimeService.startProcessInstanceByKey("performanceManagement", processVariables);
+        runtimeService.startProcessInstanceByKey("reviewProcess", processVariables);
         aSessionStatus.setComplete();
         return "redirect:/employee-list";
     }
 
     @RequestMapping(value = "/review/{taskId}", method = RequestMethod.GET)
-    public String showReviewForm(@PathVariable String taskId, Model uiModel) {
+    public String createReviewForm(@PathVariable String taskId, Model uiModel) {
         Review review = (Review) taskService.getVariable(taskId, "review");
         uiModel.addAttribute("review", review);
         uiModel.addAttribute("taskId", taskId);
@@ -87,7 +87,31 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "/review/{taskId}", method = RequestMethod.POST)
-    public String saveReviewForm(@ModelAttribute Review review, @PathVariable Long taskId, Model uiModel, SessionStatus aSessionStatus) {
+    public String createReview(
+        @ModelAttribute Review review,
+        @PathVariable Long taskId,
+        SessionStatus aSessionStatus) {
+        reviewService.update(review);
+        Map<String, Object> variables = new HashMap<String, Object>();
+        variables.put("review", review);
+        taskService.complete(String.valueOf(taskId), variables);
+        aSessionStatus.setComplete();
+        return "redirect:/review-list";
+    }
+
+    @RequestMapping(value = "/review-approval/{taskId}", method = RequestMethod.GET)
+    public String createReviewApprovalForm(@PathVariable String taskId, Model uiModel) {
+        Review review = (Review) taskService.getVariable(taskId, "review");
+        uiModel.addAttribute("review", review);
+        uiModel.addAttribute("taskId", taskId);
+        return "review-approval";
+    }
+
+    @RequestMapping(value = "/review-approval/{taskId}", method = RequestMethod.POST)
+    public String createReviewApproval(
+        @ModelAttribute Review review,
+        @PathVariable Long taskId,
+        SessionStatus aSessionStatus) {
         reviewService.update(review);
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("review", review);
