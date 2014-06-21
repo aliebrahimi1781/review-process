@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions id="taskAssigneeExample"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              xmlns:activiti="http://activiti.org/bpmn"
-             targetNamespace="http://www.endava.com/pm">
-    <process id="performanceManagement" name="Performance management process">
+             targetNamespace="http://www.endava.com/pm"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+
+    <process id="reviewProcess" name="Performance management process">
         <startEvent id="theStart"/>
         <sequenceFlow sourceRef="theStart" targetRef="createReviewList"/>
         <serviceTask id="createReviewList" name="Create review list" activiti:expression="${reviewService.createReviewList(employee, reviewers)}" activiti:resultVariable="reviewList"/>
         <sequenceFlow sourceRef="createReviewList" targetRef="reviewSubProcess"/>
+
         <subProcess id="reviewSubProcess">
             <multiInstanceLoopCharacteristics isSequential="false">
                 <loopDataInputRef>reviewList</loopDataInputRef>
@@ -18,9 +22,25 @@
             <userTask id="submitReviewForm" name="Submit review" activiti:assignee="${review.submitter.username}">
                 <documentation>Submit review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
             </userTask>
-            <sequenceFlow sourceRef="submitReviewForm" targetRef="theEndSubProcess"/>
+            <sequenceFlow sourceRef="submitReviewForm" targetRef="approveReview"/>
+            <userTask id="approveReview" name="Approve review" activiti:assignee="${review.employee.lm.username}">
+                <documentation>Approve review from ${review.submitter.firstname} ${review.submitter.lastname}</documentation>
+            </userTask>
+            <sequenceFlow sourceRef="approveReview" targetRef="approvalGateway"/>
+            <exclusiveGateway id="approvalGateway"/>
+            <sequenceFlow sourceRef="approvalGateway" targetRef="submitReviewForm">
+                <conditionExpression xsi:type="tFormalExpression">
+                    ${review.approved == false}
+                </conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow sourceRef="approvalGateway" targetRef="theEndSubProcess">
+                <conditionExpression xsi:type="tFormalExpression">
+                    ${review.approved == true}
+                </conditionExpression>
+            </sequenceFlow>
             <endEvent id="theEndSubProcess"/>
         </subProcess>
+
         <sequenceFlow sourceRef="reviewSubProcess" targetRef="createFinalReview"/>
         <serviceTask id="createFinalReview" name="Create final review" activiti:expression="${reviewService.createFinalReview(employee, reviewList)}" activiti:resultVariable="review"/>
         <sequenceFlow sourceRef="createFinalReview" targetRef="submitFinalReview"/>

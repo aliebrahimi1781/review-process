@@ -15,6 +15,7 @@ public final class SessionUser extends User {
     private final Long id;
 
     private final String firstname;
+    private final String lastname;
 
     private final Set<Role> roles;
 
@@ -28,11 +29,13 @@ public final class SessionUser extends User {
         final boolean accountNonLocked,
         final Collection<? extends GrantedAuthority> authorities,
         final Long aId,
-        final String aAFirstname,
+        final String aFirstname,
+        final String aLastname,
         final Set<Role> aRoles) {
         super(aUsername, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         id = aId;
-        firstname = aAFirstname;
+        firstname = aFirstname;
+        lastname = aLastname;
         roles = aRoles;
     }
 
@@ -42,6 +45,10 @@ public final class SessionUser extends User {
 
     public String getFirstname() {
         return this.firstname;
+    }
+
+    public String getLastname() {
+        return this.lastname;
     }
 
     public Set<Role> getRoles() {

@@ -35,6 +35,7 @@ public class ReviewServiceImpl extends AbstractServiceImpl implements ReviewServ
         review.setEmployee(employee);
         review.setSubmitter(employee);
         review.setReviewType(ReviewType.SELF);
+        review.setApproved(Boolean.FALSE);
         getEntityManager().persist(review);
         return review;
     }
@@ -46,6 +47,7 @@ public class ReviewServiceImpl extends AbstractServiceImpl implements ReviewServ
             review.setEmployee(employee);
             review.setSubmitter(user);
             review.setReviewType(ReviewType.REGULAR);
+            review.setApproved(Boolean.FALSE);
             getEntityManager().persist(review);
             reviewList.add(review);
         }
