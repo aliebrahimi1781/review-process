@@ -5,14 +5,14 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:jtds:sqlserver://localhost/pm;instance=SQLEXPRESS"/>
-            <property name="hibernate.connection.driver_class" value="net.sourceforge.jtds.jdbc.Driver"/>
-            <property name="hibernate.connection.username" value="pm"/>
-            <property name="hibernate.connection.password" value="pm"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:review;DB_CLOSE_ON_EXIT=FALSE"/>
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="false"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
     </persistence-unit>
 </persistence>
