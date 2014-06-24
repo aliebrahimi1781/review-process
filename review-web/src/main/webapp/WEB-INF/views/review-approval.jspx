@@ -25,13 +25,11 @@
         </div>
         <br/>
         <div class="fields">
-            <label for="mark">Approve: </label>
-            <form:radiobutton id="approve" path="approved" value="${true}"/>
-        </div>
-        <br/>
-        <div class="fields">
-            <label for="mark">Reject: </label>
-            <form:radiobutton id="reject" path="approved" value="${false}" />
+            <label for="approved">Approve: </label>
+            <form:select id="approved" path="approved">
+                <form:option value="${false}" label="No"/>
+                <form:option value="${true}" label="Yes"/>
+            </form:select>
         </div>
         <br/>
         <div class="buttons">
@@ -42,8 +40,7 @@
     <script type="text/javascript">
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter content'}}));
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.mark}', promptMessage: 'Select mark', disabled: true}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approve', widgetType : 'dijit.form.RadioButton', widgetAttrs : {promptMessage: 'Approve'}, required: true}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'reject', widgetType : 'dijit.form.RadioButton', widgetAttrs : {promptMessage: 'Reject'}, required: true}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.approved}', promptMessage: 'Approve?'}, required: true}));
         Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
     </script>
 </div>

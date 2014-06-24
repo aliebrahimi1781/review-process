@@ -18,9 +18,13 @@ public class Review extends GenericEntity {
 
     @Enumerated(value = EnumType.STRING)
     private ReviewType reviewType;
+    
     private String content;
+    
     private Integer mark;
+    
     private Boolean approved;
+    
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private User employee;

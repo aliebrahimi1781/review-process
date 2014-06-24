@@ -12,12 +12,14 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
                 <c:forEach items="${taskList}" var="task">
                     <tr>
                         <td>${task.name}</td>
                         <td>${task.description}</td>
+                        <td>${task.processVariables['review']}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${task.taskDefinitionKey eq 'approveReview'}">
