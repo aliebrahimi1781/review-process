@@ -5,9 +5,7 @@
 
 
     <spring:url value="/resources/j_spring_security_check" var="form_url"/>
-    <div class="dijitTitlePane">
-        <div class="dijitTitlePaneTitle dijitTitlePaneTitleOpen dijitOpen">Login</div>
-        <br/>
+    <util:panel id="loginPanel" title="Login">
         <form action='${fn:escapeXml(form_url)}' method='POST' id="login-form">
             <div class="fields">
                 <label for="login-username">Username: </label>
@@ -20,10 +18,10 @@
             </div>
             <br/>
             <div class="fields">
-                <input id="login-btn" type="submit" name="auth" value="Login"/>
+                <input id="login-btn" type="submit" name="auth" value="LOGIN"/>
             </div>
         </form>
-    </div>
+    </util:panel>
 
     <script type="text/javascript">
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'login-username', widgetType : 'dijit.form.ValidationTextBox', widgetAttrs : {promptMessage: 'Enter username', required : false}}));

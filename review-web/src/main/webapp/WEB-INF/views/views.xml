@@ -25,8 +25,12 @@
         <put-attribute name="body" value="/WEB-INF/views/review-approval.jspx" />
     </definition>
 
+    <definition name="review-report" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/review-report.jspx" />
+    </definition>
+
     <definition name="home" extends="default">
-        <put-attribute name="body" value="/WEB-INF/views/home.jspx" />
+        <put-attribute name="body" value="/WEB-INF/views/index.jspx" />
     </definition>
 
     <definition name="login" extends="public">

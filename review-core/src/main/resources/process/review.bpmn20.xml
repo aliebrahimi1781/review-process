@@ -19,7 +19,7 @@
             </multiInstanceLoopCharacteristics>
             <startEvent id="theStartSubProcess"/>
             <sequenceFlow sourceRef="theStartSubProcess" targetRef="submitReviewForm"/>
-            <userTask id="submitReviewForm" name="Submit review" activiti:assignee="${review.submitter.username}">
+            <userTask id="submitReviewForm" name="Submit ${review.approved == false?'rejected':''} review" activiti:assignee="${review.submitter.username}">
                 <documentation>Submit review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
             </userTask>
             <sequenceFlow sourceRef="submitReviewForm" targetRef="approveReview"/>

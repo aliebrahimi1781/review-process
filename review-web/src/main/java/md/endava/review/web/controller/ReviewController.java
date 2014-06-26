@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -83,18 +84,21 @@ public class ReviewController {
         Review review = (Review) taskService.getVariable(taskId, "review");
         uiModel.addAttribute("review", review);
         uiModel.addAttribute("taskId", taskId);
+        if (review.getApproved() != null && !review.getApproved()) {
+            uiModel.addAttribute("rejectReason", taskService.getVariable(taskId, "rejectReason"));
+        }
         return "review";
     }
 
     @RequestMapping(value = "/review/{taskId}", method = RequestMethod.POST)
     public String createReview(
         @ModelAttribute Review review,
-        @PathVariable Long taskId,
+        @PathVariable String taskId,
         SessionStatus aSessionStatus) {
         reviewService.update(review);
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("review", review);
-        taskService.complete(String.valueOf(taskId), variables);
+        taskService.complete(taskId, variables);
         aSessionStatus.setComplete();
         return "redirect:/review-list";
     }
@@ -110,12 +114,16 @@ public class ReviewController {
     @RequestMapping(value = "/review-approval/{taskId}", method = RequestMethod.POST)
     public String createReviewApproval(
         @ModelAttribute Review review,
-        @PathVariable Long taskId,
+        @PathVariable String taskId,
+        @RequestParam String rejectReason,
         SessionStatus aSessionStatus) {
         reviewService.update(review);
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("review", review);
-        taskService.complete(String.valueOf(taskId), variables);
+        if (!review.getApproved()) {
+            variables.put("rejectReason", rejectReason);
+        }
+        taskService.complete(taskId, variables);
         aSessionStatus.setComplete();
         return "redirect:/review-list";
     }

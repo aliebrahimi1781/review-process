@@ -1,46 +1,61 @@
 <div xmlns:spring="http://www.springframework.org/tags" xmlns:jsp="http://java.sun.com/JSP/Page"
-     xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+     xmlns:form="http://www.springframework.org/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
 
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
 
     <spring:url value="/" var="contextPath"/>
 
-    <h1>Review for "${review.employee.firstname} ${review.employee.lastname}"</h1>
-    <form:form action="${contextPath}review-approval/${taskId}" method="POST" modelAttribute="review">
-        <div class="fields">
-            <label for="content">Content: </label>
-            <form:textarea id="content" path="content" disabled="true"/>
-        </div>
-        <br/>
-        <div class="fields">
-            <label for="mark">Mark: </label>
-            <form:select id="mark" path="mark">
-                <form:option value="1" label="1"/>
-                <form:option value="2" label="2"/>
-                <form:option value="3" label="3"/>
-                <form:option value="4" label="4"/>
-                <form:option value="5" label="5"/>
-            </form:select>
-        </div>
-        <br/>
-        <div class="fields">
-            <label for="approved">Approve: </label>
-            <form:select id="approved" path="approved">
-                <form:option value="${false}" label="No"/>
-                <form:option value="${true}" label="Yes"/>
-            </form:select>
-        </div>
-        <br/>
-        <div class="buttons">
-            <input id="submitReviewRequest" type="submit" name="submit" value="Submit"/>
-        </div>
-    </form:form>
+    <util:panel id="approvePanel" title="Approve review for ${review.employee.firstname} ${review.employee.lastname}">
+        <form:form action="${contextPath}review-approval/${taskId}" method="POST" modelAttribute="review">
+            <div class="fields">
+                <label for="content">Content: </label>
+                <form:textarea id="content" path="content" disabled="true"/>
+            </div>
+            <br/>
+            <div class="fields">
+                <label for="mark">Mark: </label>
+                <form:select id="mark" path="mark">
+                    <form:option value="1" label="1"/>
+                    <form:option value="2" label="2"/>
+                    <form:option value="3" label="3"/>
+                    <form:option value="4" label="4"/>
+                    <form:option value="5" label="5"/>
+                </form:select>
+            </div>
+            <br/>
+            <div class="fields">
+                <label for="approved">Approve: </label>
+                <form:select id="approved" path="approved">
+                    <form:option value="${false}" label="No"/>
+                    <form:option value="${true}" label="Yes"/>
+                </form:select>
+            </div>
+            <br/>
+            <div id="reasonDiv" class="fields">
+                <label for="rejectReason">Reason: </label>
+                <input id="rejectReason" name="rejectReason"/>
+            </div>
+            <br/>
+            <div class="buttons">
+                <input id="submitReviewRequest" type="submit" name="submit" value="SUBMIT"/>
+            </div>
+        </form:form>
+    </util:panel>
 
     <script type="text/javascript">
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter content'}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.mark}', promptMessage: 'Select mark', disabled: true}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.approved}', promptMessage: 'Approve?'}, required: true}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.mark}',disabled: true}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.approved}', required: true, onChange: function () {showReasonTextarea()}}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'rejectReason', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter reason'}}));
         Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
+
+        function showReasonTextarea() {
+            if (dijit.byId('approved').get('value') === 'false') {
+                dojo.style('reasonDiv', 'display', 'block');
+            } else {
+                dojo.style('reasonDiv', 'display', 'none');
+            }
+        }
     </script>
 </div>
