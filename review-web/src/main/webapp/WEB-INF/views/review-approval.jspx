@@ -46,7 +46,7 @@
     <script type="text/javascript">
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter content'}}));
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {value: '${review.mark}',disabled: true}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {value: true, displayedValue: '', required: true, onChange: function () {showReasonTextarea()}}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {required: true, onChange: function () {showReasonTextarea()}}}));
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'rejectReason', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter reason', required: true}}));
         Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
 

@@ -1,0 +1,64 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+    <spring:url value="/" var="contextPath"/>
+
+    <util:panel id="reviewsPanel" title="Task duration report">
+        <div id="legend"><span/></div>
+        <div id="chart" style="width: 500px; height: 300px;"><span/></div>
+
+    </util:panel>
+
+    <script type="text/javascript">
+        dojo.require("dojox.charting.Chart2D");
+        dojo.require("dojox.charting.plot2d.Pie");
+        dojo.require("dojox.charting.action2d.Highlight");
+        dojo.require("dojox.charting.action2d.MoveSlice");
+        dojo.require("dojox.charting.action2d.Tooltip");
+        dojo.require("dojox.charting.themes.MiamiNice");
+        dojo.require("dojox.charting.widget.Legend");
+
+        var reportData = '${reportData}';
+        reportData = JSON.parse(reportData);
+
+        dojo.ready(function() {
+
+            makeChart(80, "legend", "chart");
+
+        });
+
+        function makeChart(radius,chartDiv,legendDiv){
+
+            dojo.require("dojox.charting.Chart2D");
+            dojo.require("dojox.charting.plot2d.Pie");
+            dojo.require("dojox.charting.action2d.Highlight");
+            dojo.require("dojox.charting.action2d.MoveSlice");
+            dojo.require("dojox.charting.action2d.Tooltip");
+            dojo.require("dojox.charting.themes.MiamiNice");
+            dojo.require("dojox.charting.widget.Legend");
+
+            dojo.ready(function(){
+                var dc = dojox.charting;
+                var chartTwo = new dc.Chart2D("chart");
+                chartTwo.setTheme(dc.themes.MiamiNice)
+                        .addPlot("default", {
+                            type: "Pie",
+                            labels: false,
+                            font: "normal normal 11pt Tahoma",
+                            fontColor: "black",
+                            labelOffset: -70,
+                            radius: radius
+                        }).addSeries("Series A", reportData);
+                var anim_a = new dc.action2d.MoveSlice(chartTwo, "default");
+                var anim_b = new dc.action2d.Highlight(chartTwo, "default");
+                var anim_c = new dc.action2d.Tooltip(chartTwo, "default");
+                chartTwo.render();
+                var legendTwo = new dojox.charting.widget.Legend({chart: chartTwo}, "legend");
+            });
+
+        }
+    </script>
+</div>
