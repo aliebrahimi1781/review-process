@@ -27,12 +27,12 @@
             <div class="fields">
                 <label for="approved">Approve: </label>
                 <form:select id="approved" path="approved">
-                    <form:option value="${false}" label="No"/>
                     <form:option value="${true}" label="Yes"/>
+                    <form:option value="${false}" label="No"/>
                 </form:select>
             </div>
             <br/>
-            <div id="reasonDiv" class="fields">
+            <div id="reasonDiv" class="fields" style="display: none">
                 <label for="rejectReason">Reason: </label>
                 <input id="rejectReason" name="rejectReason"/>
             </div>
@@ -44,10 +44,10 @@
     </util:panel>
 
     <script type="text/javascript">
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter content'}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.mark}',disabled: true}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {value: '${review.approved}', required: true, onChange: function () {showReasonTextarea()}}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'rejectReason', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter reason'}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter content'}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {value: '${review.mark}',disabled: true}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {value: true, displayedValue: '', required: true, onChange: function () {showReasonTextarea()}}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'rejectReason', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter reason', required: true}}));
         Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
 
         function showReasonTextarea() {

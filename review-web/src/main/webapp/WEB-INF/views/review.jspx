@@ -50,8 +50,8 @@
     </util:panel>
 
     <script type="text/javascript">
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {promptMessage: 'Enter content', required : true}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'dijit.form.FilteringSelect', widgetAttrs : {promptMessage: 'Select mark', required : true}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter content', required : true}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {promptMessage: 'Select mark', required : true}}));
         Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
     </script>
 </div>
