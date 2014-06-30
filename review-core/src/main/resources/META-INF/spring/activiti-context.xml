@@ -35,7 +35,7 @@
         <property name="deploymentResources">
             <list>
                 <value>classpath:process/review.bpmn20.xml</value>
-                <value>classpath:process/processInstanceOverviewReport.bpmn20.xml</value>
+                <value>classpath:process/taskDurationReport.bpmn20.xml</value>
             </list>
         </property>
     </bean>
