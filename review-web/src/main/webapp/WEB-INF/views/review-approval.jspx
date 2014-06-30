@@ -47,14 +47,16 @@
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'content', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter content'}}));
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'mark', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {value: '${review.mark}',disabled: true}}));
         Spring.addDecoration(new Spring.ElementDecoration({elementId : 'approved', widgetType : 'myDojo.DefaultValueFilteringSelect', widgetAttrs : {required: true, onChange: function () {showReasonTextarea()}}}));
-        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'rejectReason', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter reason', required: true}}));
+        Spring.addDecoration(new Spring.ElementDecoration({elementId : 'rejectReason', widgetType : 'ValidationTextarea', widgetAttrs : {promptMessage: 'Enter reason'}}));
         Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'submitReviewRequest', event:'onclick'}));
 
         function showReasonTextarea() {
             if (dijit.byId('approved').get('value') === 'false') {
                 dojo.style('reasonDiv', 'display', 'block');
+                dijit.byId('rejectReason').set('required', true);
             } else {
                 dojo.style('reasonDiv', 'display', 'none');
+                dijit.byId('rejectReason').set('required', false);
             }
         }
     </script>
