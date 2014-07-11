@@ -8,23 +8,23 @@
 
     <spring:url value="/" var="home"/>
     <c:if test="${pageContext['request'].userPrincipal != null}">
-    <span>
-    <a href="${home}">
-        Home
-    </a>
-    </span>
-
-    <c:out value=" | "/>
-    <span>
-      <spring:url value="/logout" var="logout"/>
-      <a href="${logout}">
-          Logout
-      </a>
-    </span>
-    </c:if>
-
-  <span style="float: right">
-      <sec:authentication property="principal.firstname"/>&amp;nbsp;
-      <sec:authentication property="principal.lastname"/>
-  </span>
+	    <span>
+	    <a href="${home}">
+	        Home
+	    </a>
+	    </span>
+	
+	    <c:out value=" | "/>
+	    <span>
+	      <spring:url value="/logout" var="logout"/>
+	      <a href="${logout}">
+	          Logout
+	      </a>
+	    </span>
+	    
+		<span style="float: right">
+		    <sec:authentication property="principal.firstname"/>${" "}
+		    <sec:authentication property="principal.lastname"/>
+		</span>
+  	</c:if>
 </div>
