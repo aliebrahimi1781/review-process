@@ -1,53 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions id="taskAssigneeExample"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:activiti="http://activiti.org/bpmn"
-             targetNamespace="http://www.endava.com/pm"
-             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
-
-    <process id="reviewProcess" name="Performance management process">
-        <startEvent id="theStart"/>
-        <sequenceFlow sourceRef="theStart" targetRef="createReviewList"/>
-        <serviceTask id="createReviewList" name="Create review list" activiti:expression="${reviewService.createReviewList(employee, reviewers)}" activiti:resultVariable="reviewList"/>
-        <sequenceFlow sourceRef="createReviewList" targetRef="reviewSubProcess"/>
-
-        <subProcess id="reviewSubProcess">
-            <multiInstanceLoopCharacteristics isSequential="false">
-                <loopDataInputRef>reviewList</loopDataInputRef>
-                <inputDataItem name="review"/>
-            </multiInstanceLoopCharacteristics>
-            <startEvent id="theStartSubProcess"/>
-            <sequenceFlow sourceRef="theStartSubProcess" targetRef="submitReviewForm"/>
-            <userTask id="submitReviewForm" name="Submit ${review.approved == false?'rejected ':''}review" activiti:assignee="${review.submitter.username}">
-                <documentation>Submit review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
-            </userTask>
-            <sequenceFlow sourceRef="submitReviewForm" targetRef="approveReview"/>
-            <userTask id="approveReview" name="Approve review" activiti:assignee="${review.employee.lm.username}">
-                <documentation>Approve review from ${review.submitter.firstname} ${review.submitter.lastname}</documentation>
-            </userTask>
-            <sequenceFlow sourceRef="approveReview" targetRef="approvalGateway"/>
-            <exclusiveGateway id="approvalGateway"/>
-            <sequenceFlow sourceRef="approvalGateway" targetRef="submitReviewForm">
-                <conditionExpression xsi:type="tFormalExpression">
-                    ${review.approved == false}
-                </conditionExpression>
-            </sequenceFlow>
-            <sequenceFlow sourceRef="approvalGateway" targetRef="theEndSubProcess">
-                <conditionExpression xsi:type="tFormalExpression">
-                    ${review.approved == true}
-                </conditionExpression>
-            </sequenceFlow>
-            <endEvent id="theEndSubProcess"/>
-        </subProcess>
-
-        <sequenceFlow sourceRef="reviewSubProcess" targetRef="createFinalReview"/>
-        <serviceTask id="createFinalReview" name="Create final review" activiti:expression="${reviewService.createFinalReview(employee, reviewList)}" activiti:resultVariable="review"/>
-        <sequenceFlow sourceRef="createFinalReview" targetRef="submitFinalReview"/>
-        <userTask id="submitFinalReview" name="Submit final review" activiti:assignee="${review.submitter.username}">
-            <documentation>Submit final review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
-        </userTask>
-        <sequenceFlow sourceRef="submitFinalReview" targetRef="theEnd"/>
-        <endEvent id="theEnd"/>
-    </process>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.endava.com/pm">
+  <process id="reviewProcess" name="Performance management process" isExecutable="true">
+    <startEvent id="theStart"></startEvent>
+    <sequenceFlow id="sequenceFlow-3ead67bc-55e9-42bb-9d1f-8438341c2b29" sourceRef="theStart" targetRef="createReviewList"></sequenceFlow>
+    <serviceTask id="createReviewList" name="Create review list" activiti:expression="${reviewService.createReviewList(employee, reviewers)}" activiti:resultVariableName="reviewList"></serviceTask>
+    <sequenceFlow id="sequenceFlow-3b17418f-2a43-4bde-9952-b5fdff4b655b" sourceRef="createReviewList" targetRef="reviewSubProcess"></sequenceFlow>
+    <subProcess id="reviewSubProcess" name="subProcess">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="reviewList" activiti:elementVariable="review"></multiInstanceLoopCharacteristics>
+      <startEvent id="theStartSubProcess"></startEvent>
+      <sequenceFlow id="sequenceFlow-8104ad4c-a0a1-48e1-92ff-d3f85d2b0953" sourceRef="theStartSubProcess" targetRef="submitReviewForm"></sequenceFlow>
+      <userTask id="submitReviewForm" name="Submit review" activiti:assignee="${review.submitter.username}">
+        <documentation>Submit ${review.approved == false?'rejected ':''}review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
+      </userTask>
+      <sequenceFlow id="sequenceFlow-5d6ed9bb-a70a-49ac-aab0-3b8290e87445" sourceRef="submitReviewForm" targetRef="approveReview"></sequenceFlow>
+      <userTask id="approveReview" name="Approve review" activiti:assignee="${review.employee.lm.username}" activiti:resultVariableName="rejectReason">
+        <documentation>Approve review from ${review.submitter.firstname} ${review.submitter.lastname}</documentation>
+      </userTask>
+      <sequenceFlow id="sequenceFlow-6b2efdca-a24f-4735-9d14-64290adf0d2d" sourceRef="approveReview" targetRef="approvalGateway"></sequenceFlow>
+      <exclusiveGateway id="approvalGateway"></exclusiveGateway>
+      <sequenceFlow id="sequenceFlow-7cbb35e6-f9d3-4a9f-a91b-7020eaedbb86" sourceRef="approvalGateway" targetRef="submitReviewForm">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${review.approved == false}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="sequenceFlow-a0fa1650-6de2-49a8-b677-8599a2084d53" sourceRef="approvalGateway" targetRef="theEndSubProcess">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${review.approved == true}]]></conditionExpression>
+      </sequenceFlow>
+      <endEvent id="theEndSubProcess"></endEvent>
+    </subProcess>
+    <sequenceFlow id="sequenceFlow-0dc0e848-ffaa-4290-9b4c-386c0b958c41" sourceRef="reviewSubProcess" targetRef="createFinalReview"></sequenceFlow>
+    <serviceTask id="createFinalReview" name="Create final review" activiti:expression="${reviewService.createFinalReview(employee, reviewList)}" activiti:resultVariableName="review"></serviceTask>
+    <sequenceFlow id="sequenceFlow-2489175a-8e02-4848-975c-576be8e17276" sourceRef="createFinalReview" targetRef="submitFinalReview"></sequenceFlow>
+    <userTask id="submitFinalReview" name="Submit final review" activiti:assignee="${review.submitter.username}">
+      <documentation>Submit final review for ${review.employee.firstname} ${review.employee.lastname}</documentation>
+    </userTask>
+    <sequenceFlow id="sequenceFlow-9cdfbab5-480e-46e0-a18c-25bbd2d5bfb4" sourceRef="submitFinalReview" targetRef="theEnd"></sequenceFlow>
+    <endEvent id="theEnd"></endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_reviewProcess">
+    <bpmndi:BPMNPlane bpmnElement="reviewProcess" id="BPMNPlane_reviewProcess">
+      <bpmndi:BPMNShape bpmnElement="theStart" id="BPMNShape_theStart">
+        <omgdc:Bounds height="35.0" width="35.0" x="0.0" y="66.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="createReviewList" id="BPMNShape_createReviewList">
+        <omgdc:Bounds height="60.0" width="100.0" x="80.0" y="51.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="reviewSubProcess" id="BPMNShape_reviewSubProcess">
+        <omgdc:Bounds height="321.0" width="540.0" x="230.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theStartSubProcess" id="BPMNShape_theStartSubProcess">
+        <omgdc:Bounds height="35.0" width="35.0" x="250.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="submitReviewForm" id="BPMNShape_submitReviewForm">
+        <omgdc:Bounds height="60.0" width="100.0" x="330.0" y="82.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveReview" id="BPMNShape_approveReview">
+        <omgdc:Bounds height="60.0" width="100.0" x="480.0" y="85.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approvalGateway" id="BPMNShape_approvalGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="630.0" y="92.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEndSubProcess" id="BPMNShape_theEndSubProcess">
+        <omgdc:Bounds height="35.0" width="35.0" x="720.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="createFinalReview" id="BPMNShape_createFinalReview">
+        <omgdc:Bounds height="60.0" width="100.0" x="820.0" y="51.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="submitFinalReview" id="BPMNShape_submitFinalReview">
+        <omgdc:Bounds height="60.0" width="100.0" x="970.0" y="51.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="1120.0" y="66.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-3ead67bc-55e9-42bb-9d1f-8438341c2b29" id="BPMNEdge_sequenceFlow-3ead67bc-55e9-42bb-9d1f-8438341c2b29">
+        <omgdi:waypoint x="35.0" y="83.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="81.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-3b17418f-2a43-4bde-9952-b5fdff4b655b" id="BPMNEdge_sequenceFlow-3b17418f-2a43-4bde-9952-b5fdff4b655b">
+        <omgdi:waypoint x="180.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-8104ad4c-a0a1-48e1-92ff-d3f85d2b0953" id="BPMNEdge_sequenceFlow-8104ad4c-a0a1-48e1-92ff-d3f85d2b0953">
+        <omgdi:waypoint x="285.0" y="114.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-5d6ed9bb-a70a-49ac-aab0-3b8290e87445" id="BPMNEdge_sequenceFlow-5d6ed9bb-a70a-49ac-aab0-3b8290e87445">
+        <omgdi:waypoint x="430.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="115.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="440.0" y="112.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-6b2efdca-a24f-4735-9d14-64290adf0d2d" id="BPMNEdge_sequenceFlow-6b2efdca-a24f-4735-9d14-64290adf0d2d">
+        <omgdi:waypoint x="580.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="592.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-7cbb35e6-f9d3-4a9f-a91b-7020eaedbb86" id="BPMNEdge_sequenceFlow-7cbb35e6-f9d3-4a9f-a91b-7020eaedbb86">
+        <omgdi:waypoint x="650.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="618.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="142.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="660.0" y="132.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-a0fa1650-6de2-49a8-b677-8599a2084d53" id="BPMNEdge_sequenceFlow-a0fa1650-6de2-49a8-b677-8599a2084d53">
+        <omgdi:waypoint x="670.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="114.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-0dc0e848-ffaa-4290-9b4c-386c0b958c41" id="BPMNEdge_sequenceFlow-0dc0e848-ffaa-4290-9b4c-386c0b958c41">
+        <omgdi:waypoint x="770.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-2489175a-8e02-4848-975c-576be8e17276" id="BPMNEdge_sequenceFlow-2489175a-8e02-4848-975c-576be8e17276">
+        <omgdi:waypoint x="920.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="81.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-9cdfbab5-480e-46e0-a18c-25bbd2d5bfb4" id="BPMNEdge_sequenceFlow-9cdfbab5-480e-46e0-a18c-25bbd2d5bfb4">
+        <omgdi:waypoint x="1070.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1120.0" y="83.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>

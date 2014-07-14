@@ -121,7 +121,8 @@ public class ReviewController {
         Map<String, Object> variables = new HashMap<String, Object>();
         variables.put("review", review);
         if (!review.getApproved()) {
-            variables.put("rejectReason", rejectReason);
+        	String executionId = taskService.createTaskQuery().taskId(taskId).singleResult().getExecutionId();
+            runtimeService.setVariableLocal(executionId, "rejectReason", rejectReason);
         }
         taskService.complete(taskId, variables);
         aSessionStatus.setComplete();
